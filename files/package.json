@@ -1,0 +1,20 @@
+{
+  "name": "docker_node_app",
+  "version": "1.0.0",
+  "description": "my node app",
+  "author": "AM <am@nodeapp.com>",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon -L ./server.js localhost 8080"
+  },
+  "dependencies": {
+    "express": "^4.16.1",
+    "mysql": "^2.18.1",
+    "util": "^0.12.4"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}

@@ -27,5 +27,37 @@ app.get("/",function(req,res){
     })();
 });
 
+// get one user
+app.get("/users/:id",function(req,res){
+    (async() => {
+        let user = await myDatabase.GetUser(req.params.id);
+        res.send({ result: user })
+    })();
+});
+
+// add a new user
+app.post('/add-user', (req, res) => {
+    (async() => {
+        let isNew = await myDatabase.AddUser("aname");
+        res.send({ result: isNew })
+    })();
+});
+
+// update user info
+app.post('/update-user/:id/:name', (req, res) => {
+    (async() => {
+        let isNew = await myDatabase.UpdateUser({id:4, name:"Rachel"});
+        res.send({ result: isNew })
+    })();
+});
+
+// delete user
+app.get('/delete-user/:id', (req, res) => {
+    (async() => {
+        let isNew = await myDatabase.DeleteUser(req.params.id);
+        res.send({ result: isNew })
+    })();
+});
+
 
 

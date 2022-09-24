@@ -10,7 +10,7 @@ services:
         volumes:
             - ./files:/usr/src/app
         ports:
-            - 80:80
+            - "49160:8080"                
     db:
         container_name: node-db
         image: mariadb:10.5.17

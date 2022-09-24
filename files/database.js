@@ -7,47 +7,31 @@ let connection = mysql.createConnection({
     database: "test_ailin"
 });
 
-function GetUsers()
+function getUsers()
 {
     return new Promise(resolve => {
-        let users = [];
-        connection.query('SELECT * FROM users ORDER BY id ASC', function (error, results, fields) {
+        connection.query('SELECT * FROM users ORDER BY id ASC', function (error, results) {
             if (error) throw error;
-
-            Object.keys(results).forEach(function (key) {
-                let user = {};
-                user.id = results[key].id;
-                user.name = results[key].name;
-                users.push(user);
-            });
-            resolve(users);
+            resolve(results);
         });
     });
 }
 
-function GetUser(id)
+function getUser(field, id)
 {
     return new Promise(resolve => {
-        let user = {};
-        connection.query('SELECT * FROM users WHERE id = ?', [id], function (error, results, fields) {
+        let query = connection.query('SELECT * FROM users WHERE ?? = ?', [field, id], function (error, results, fields) {
             if (error) throw error;
-
-            Object.keys(results).forEach(function (key) {
-                user.id = results[key].id;
-                user.name = results[key].name;
-            });
-            resolve(user);
+            resolve(results);
         });
+        console.log(query.sql);
     });
 }
 
-function AddUser(username)
+function addUser(username)
 {
-    if (username.length == 0)
-        return false;
-
     return new Promise(resolve => {
-        var post  = {name: username};
+        let post  = {name: username};
         connection.query('INSERT INTO users SET ?', post, function (error, results, fields) {
             if (error) throw error;
             resolve(1);
@@ -55,11 +39,8 @@ function AddUser(username)
     });
 }
 
-function UpdateUser(user)
+function updateUser(user)
 {
-    /*if (username.length == 0)
-        return false;*/
-
     return new Promise(resolve => {
         connection.query('UPDATE users SET name = ? WHERE id = ?', [user.name, user.id], function (error, results, fields) {
             if (error) throw error;
@@ -68,11 +49,8 @@ function UpdateUser(user)
     });
 }
 
-function DeleteUser(id)
+function deleteUser(id)
 {
-    /*if (username.length == 0)
-        return false;*/
-
     return new Promise(resolve => {
         connection.query('DELETE FROM users WHERE id=?', [id], function (error, results, fields) {
             if (error) throw error;
@@ -81,4 +59,4 @@ function DeleteUser(id)
     });
 }
 
-module.exports = { connection, GetUsers, GetUser, AddUser, UpdateUser, DeleteUser };
+module.exports = { connection, getUsers, getUser, addUser, updateUser, deleteUser };

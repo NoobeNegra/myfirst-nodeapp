@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Nodeapp Test</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="styles/font.css"></head>
+        <link rel="stylesheet" href="styles/base.css"></head>
+        <link href='https://fonts.googleapis.com/css?family=Merriweather:400,700' rel='stylesheet' type='text/css'>
+        <script src="javascripts/jquery.min.js"></script>
+    </head>
+    <body>
+        <main class="container">
+            <h1>Node application test</h1>
+
+            <h2>Leaderboard</h2>
+
+
+            <div class="grid">
+                <div>
+                    <div class="loading">
+                        <a href="#" aria-busy="true"></a>
+                    </div>
+                    <table rol="grid" id="users-table" class="show-when-data-available">
+                        <thead>
+                        <tr>
+                            <th scope="col">#ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col" colspan="2">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <form action="" id="new-user-form">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" placeholder="User's name" required>
+                        <button type="submit">Create</button>
+                    </form>
+                </div>
+            </div>
+
+            <dialog id="modal-update-user-info">
+                <article>
+                    <header>
+                        <a href="#"
+                           aria-label="Close"
+                           class="close"
+                           data-target="modal-update-user-info"
+                           onClick="closeModal(this)">
+                        </a>
+                        Update user <span id="user-placeholder-id"></span>
+                    </header>
+                    <p>You are going to change <span class="user-placeholder-name"></span>'s name </p>
+                    <form action="" id="update-user-form">
+                        <label for="name">New name</label>
+                        <input type="hidden" class="id-user" name="id">
+                        <input type="text" name="name" placeholder="New name" required>
+                        <button type="submit">Change</button>
+                    </form>
+                </article>
+            </dialog>
+
+            <dialog id="modal-confirm">
+                <article>
+                    <a href="#"
+                       aria-label="Close"
+                       class="close"
+                       data-target="modal-confirm"
+                       onClick="closeModal(this)">
+                    </a>
+                    <h3>Do you really want to delete <span class="user-placeholder-name"></span>?</h3>
+                    <p>
+                        You cannot come back from this action
+                        this user will be lost forever.
+                        <input type="hidden" class="id-user" name="id">
+                    </p>
+                    <footer>
+                        <a href="#"
+                           role="button"
+                           class="secondary"
+                           data-target="modal-confirm"
+                           onClick="closeModal(this)">
+                            Cancel
+                        </a>
+                        <a href="#"
+                           role="button"
+                           data-target="modal-confirm"
+                           onClick="deleteUser();closeModal(this)">
+                            Yes, delete!
+                        </a>
+                    </footer>
+                </article>
+            </dialog>
+        </main>
+        <script src="javascripts/requests.js"></script>
+    </body>
+</html>

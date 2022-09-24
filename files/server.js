@@ -1,63 +1,58 @@
 'use strict';
 
-const express = require('express');
-const myDatabase = require('./database');
-
 // Constants
-const PORT = 8080;
-const HOST = '0.0.0.0';
+const PORT      = 8080;
+const HOST      = '0.0.0.0';
+const VIEWS     = __dirname + '/views/';
+const PUBLIC    = __dirname + '/public/';
 
-// app & router
-const app = express();
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
+// Router configuration
+let express     = require('express');
+let app         = express();
+let router      = express.Router();
+let bodyParser  = require('body-parser');
+let user        = require('./user');
 
-//const router = express.Router();
-
-/*app.use(function (req,res,next) {
-    console.log("/" + req.method);
-    console.log(req.params);
-});*/
-
-// index
-app.get("/",function(req,res){
-    (async() => {
-        let users = await myDatabase.GetUsers();
-        res.send({ result: users })
-    })();
+// Base URL
+router.get("/",function(req,res){
+    return res.status(200).sendFile(VIEWS+"index.html");
 });
 
-// get one user
-app.get("/users/:id",function(req,res){
-    (async() => {
-        let user = await myDatabase.GetUser(req.params.id);
-        res.send({ result: user })
-    })();
+// get all users
+router.get("/get-users", async (req, res, next) =>{
+    res.status(200).send(await user.list());
+});
+
+// get user by id
+router.get("/user/:id", async (req, res, next) =>{
+    res.status(200).send(await user.get(req.params.id));
 });
 
 // add a new user
-app.post('/add-user', (req, res) => {
-    (async() => {
-        let isNew = await myDatabase.AddUser("aname");
-        res.send({ result: isNew })
-    })();
+router.post("/add-user", async (req, res, next) =>{
+    res.status(200).send(await user.add(req.body));
 });
 
-// update user info
-app.post('/update-user/:id/:name', (req, res) => {
-    (async() => {
-        let isNew = await myDatabase.UpdateUser({id:4, name:"Rachel"});
-        res.send({ result: isNew })
-    })();
+// update user
+router.put("/user/:id", async (req, res, next) =>{
+    res.status(200).send(await user.update(req.params.id, req.body));
 });
 
-// delete user
-app.get('/delete-user/:id', (req, res) => {
-    (async() => {
-        let isNew = await myDatabase.DeleteUser(req.params.id);
-        res.send({ result: isNew })
-    })();
+// delete
+router.delete("/user/:id", async (req, res, next) =>{
+    await user.deleteUser(req.params.id)
+    res.status(200).send("ok");
 });
+
+app.use(express.static(VIEWS));
+app.use(express.static(PUBLIC));
+app.use(bodyParser.json());
+app.use("/", router);
+
+app.listen(PORT, HOST);
+
+console.log(`All good and running on http://${HOST}:${PORT}`);
+
 
 
 

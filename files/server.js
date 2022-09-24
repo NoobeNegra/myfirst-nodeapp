@@ -20,28 +20,55 @@ router.get("/",function(req,res){
 
 // get all users
 router.get("/get-users", async (req, res, next) =>{
-    res.status(200).send(await user.list());
+    return res.status(200).send(await user.list());
 });
 
 // get user by id
 router.get("/user/:id", async (req, res, next) =>{
-    res.status(200).send(await user.get(req.params.id));
+    try {
+        let requested = await user.get(req.params.id);
+        return res.status(200).send(requested);
+    }
+    catch (error)
+    {
+        return res.status(500).send(error.toString());
+    }
 });
 
 // add a new user
 router.post("/add-user", async (req, res, next) =>{
-    res.status(200).send(await user.add(req.body));
+    try {
+        let added = await user.add(req.body);
+        return res.status(200).send(added);
+    }
+    catch (error)
+    {
+        return res.status(500).send(error.toString());
+    }
 });
 
 // update user
 router.put("/user/:id", async (req, res, next) =>{
-    res.status(200).send(await user.update(req.params.id, req.body));
+    try {
+        let updated = await user.update(req.params.id, req.body);
+        return res.status(200).send(updated);
+    }
+    catch (error)
+    {
+        return res.status(500).send(error.toString());
+    }
 });
 
 // delete
 router.delete("/user/:id", async (req, res, next) =>{
-    await user.deleteUser(req.params.id)
-    res.status(200).send("ok");
+    try {
+        let deleted = await user.deleteUser(req.params.id)
+        return res.status(200).send(deleted);
+    }
+    catch (error)
+    {
+        return res.status(500).send(error.toString());
+    }
 });
 
 app.use(express.static(VIEWS));
